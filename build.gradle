@@ -18,12 +18,12 @@ buildscript {
 apply plugin: 'kotlin2js'
 
 compileKotlin2Js {
-    // kotlinOptions.outputFile = "script/example.js"
+    kotlinOptions.outputFile = "script/example.js"
 }
 
 sourceSets {
     main.kotlin.srcDirs += "src/main/kotlin"
-    test.kotlin.srcDirs += "src/main/kotlin"
+    test.kotlin.srcDirs += "src/test/kotlin"
 }
 
 repositories {
@@ -34,8 +34,23 @@ repositories {
 }
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.seleniumhq.selenium:selenium-java:$selenium_version"
     testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:$selenium_version"
 }
+
+task copyScripts(type: Copy) {
+    from zipTree("build/libs/kotlin-js-example-1.0-SNAPSHOT.jar")
+    into 'script'
+    include '**/*.html'
+    include '**/*.js'
+    exclude '**/*.kjsm'
+}
+
+task cleanScripts(type: Delete) {
+    delete 'script'
+}
+
+build.dependsOn(cleanScripts, copyScripts)
