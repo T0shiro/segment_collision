@@ -42,7 +42,7 @@ dependencies {
 }
 
 task copyScripts(type: Copy) {
-    from zipTree("build/libs/kotlin-js-example-1.0-SNAPSHOT.jar")
+    from zipTree("build/libs/${project.name}-${project.version}.jar")
     into 'script'
     include '**/*.html'
     include '**/*.js'
