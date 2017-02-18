@@ -36,6 +36,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    testCompile "junit:junit:4.12"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile "org.seleniumhq.selenium:selenium-java:$selenium_version"
     testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:$selenium_version"
