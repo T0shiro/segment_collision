@@ -13,7 +13,7 @@ and modified it.
 
 1. ``./gradlew clean build``
 
-1. Point your browser to the ``./script/index.html`` file
+1. Point your browser to the ``./web/index.html`` file
 
 Do you see ``Some Dynamically Created Content!!!``?
 Congratulations! You're all set.

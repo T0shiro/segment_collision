@@ -4,6 +4,7 @@ version '1.0-SNAPSHOT'
 buildscript {
     ext.kotlin_version = '1.1.0-rc-91'
     ext.selenium_version = '2.52.0'
+    ext.web_dir = 'web'
     repositories {
         mavenCentral()
         maven {
@@ -18,7 +19,7 @@ buildscript {
 apply plugin: 'kotlin2js'
 
 compileKotlin2Js {
-    kotlinOptions.outputFile = "script/example.js"
+    kotlinOptions.outputFile = "$web_dir/example.js"
 }
 
 sourceSets {
@@ -42,16 +43,36 @@ dependencies {
     testCompile "org.seleniumhq.selenium:selenium-htmlunit-driver:$selenium_version"
 }
 
-task copyScripts(type: Copy) {
-    from zipTree("build/libs/${project.name}-${project.version}.jar")
-    into 'script'
-    include '**/*.html'
-    include '**/*.js'
-    exclude '**/*.kjsm'
+clean.doFirst() {
+    delete("${web_dir}")
 }
 
-task cleanScripts(type: Delete) {
-    delete 'script'
-}
+build.doLast() {
+    // Copy kotlin.js and kotlin-meta.js from jar into web directory
+    // TODO Replace with CDN link in html when available.
+    configurations.compile.each { File file ->
+        copy {
+            includeEmptyDirs = false
 
-build.dependsOn(cleanScripts, copyScripts)
+            from zipTree(file.absolutePath)
+            into "${projectDir}/${web_dir}"
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        }
+    }
+
+    // Copy static resources
+    File artifact = new File("build/libs/${project.name}-${project.version}.jar")
+    copy {
+        includeEmptyDirs = false
+
+        from zipTree(artifact)
+        into "${web_dir}"
+        include { fileTreeElement ->
+            def path = fileTreeElement.path
+            !(path.endsWith(".js") || path.endsWith(".kjsm") || path.startsWith("META-INF/"))
+        }
+    }
+}
