@@ -2,7 +2,6 @@ package sample
 
 import org.w3c.dom.*
 import org.w3c.dom.events.EventListener
-import kotlin.browser.document
 import kotlin.dom.appendText
 import kotlin.dom.clear
 
@@ -11,10 +10,7 @@ fun processLogin(div: HTMLDivElement, form: HTMLFormElement) {
     val password = form.children["password"] as HTMLInputElement
     if(username.value == "admin" && password.value == "pizza") {
         div.clear()
-        val span = document.createElement("span")
-        span.setAttribute("id", "message")
-        span.appendText("Welcome!")
-        div.appendChild(span)
+        div.appendChild(welcomeView())
     } else {
         val message = form.children["message"] as HTMLSpanElement
         message.clear()

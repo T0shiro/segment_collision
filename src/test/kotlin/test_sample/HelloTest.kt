@@ -7,6 +7,7 @@ import org.w3c.dom.get
 import sample.loginForm
 import sample.lineBreak
 import sample.processLogin
+import sample.welcomeView
 import kotlin.browser.document
 
 fun myApp() {
@@ -23,6 +24,12 @@ fun myApp() {
 
         assert.ok(form.children["username"] != null, "Passed!")
         assert.ok(form.children["password"] != null, "Passed!")
+    }
+
+    QUnit.test("build a welcome view") { assert ->
+        val view = welcomeView()
+        assert.ok(view.tagName == "SPAN", "Passed!")
+        assert.ok(view.getAttribute("id") == "message", "Passed!")
     }
 
     QUnit.test("process invalid login") { assert ->
