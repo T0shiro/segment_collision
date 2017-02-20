@@ -1,8 +1,13 @@
 package test_sample
 
+import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.get
 import sample.loginForm
 import sample.lineBreak
+import sample.processLogin
+import kotlin.browser.document
 
 fun myApp() {
     QUnit.test("build a linebreak") { assert ->
@@ -18,6 +23,28 @@ fun myApp() {
 
         assert.ok(form.children["username"] != null, "Passed!")
         assert.ok(form.children["password"] != null, "Passed!")
+    }
+
+    QUnit.test("process invalid login") { assert ->
+        val div = document.createElement("div") as HTMLDivElement
+        val form = loginForm()
+        processLogin(div, form)
+        val message = form.children["message"] as HTMLSpanElement
+        assert.ok(message.textContent == "Invalid username or password.", "Passed!")
+    }
+
+    QUnit.test("process valid login") { assert ->
+        val div = document.createElement("div") as HTMLDivElement
+        val form = loginForm()
+
+        val username = form.children["username"] as HTMLInputElement
+        username.value = "admin"
+        val password = form.children["password"] as HTMLInputElement
+        password.value = "pizza"
+
+        processLogin(div, form)
+        val message = div.children["message"] as HTMLSpanElement
+        assert.ok(message.textContent == "Welcome!", "Passed!")
     }
 
 }

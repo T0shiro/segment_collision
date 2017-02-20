@@ -1,9 +1,9 @@
 package sample
 
-import org.w3c.dom.Element
+import org.w3c.dom.HTMLFormElement
 import kotlin.browser.document
 
-fun loginForm(): Element {
+fun loginForm(): HTMLFormElement {
     val form = document.createElement("form")
 
     val message = document.createElement("span")
@@ -24,5 +24,5 @@ fun loginForm(): Element {
     submit.textContent = "Sign In"
 
     form.append(message, lineBreak(), username, lineBreak(), password, lineBreak(), submit)
-    return form
+    return form as HTMLFormElement
 }

@@ -18,7 +18,8 @@ and modified it.
 
 1. Point your browser to the ``./web/index.html`` file
 > Do you see a sign in form?
-
+> Login with admin / pizza
+ 
 Congratulations! You're all set.
 
 Have fun :-)

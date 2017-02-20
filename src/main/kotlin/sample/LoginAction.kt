@@ -6,14 +6,13 @@ import kotlin.browser.document
 import kotlin.dom.appendText
 import kotlin.dom.clear
 
-fun formAction(div: Element) = EventListener {
-    it.preventDefault()
-    val form = it.target as HTMLFormElement
+fun processLogin(div: HTMLDivElement, form: HTMLFormElement) {
     val username = form.children["username"] as HTMLInputElement
     val password = form.children["password"] as HTMLInputElement
     if(username.value == "admin" && password.value == "pizza") {
         div.clear()
         val span = document.createElement("span")
+        span.setAttribute("id", "message")
         span.appendText("Welcome!")
         div.appendChild(span)
     } else {
@@ -21,4 +20,9 @@ fun formAction(div: Element) = EventListener {
         message.clear()
         message.appendText("Invalid username or password.")
     }
+}
+
+fun loginAction(div: HTMLDivElement) = EventListener {
+    it.preventDefault()
+    processLogin(div, it.target as HTMLFormElement)
 }
