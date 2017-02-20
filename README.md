@@ -15,7 +15,7 @@ and modified it.
 
 1. Point your browser to the ``./web/index.html`` file
 
-Do you see ``Some Dynamically Created Content!!!``?
+Do you see a sign in form?
 Congratulations! You're all set.
 
 Have fun :-)
