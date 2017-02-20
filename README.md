@@ -13,9 +13,12 @@ and modified it.
 
 1. ``./gradlew clean build``
 
-1. Point your browser to the ``./web/index.html`` file
+1. Point your browser to the ``./test/index.html`` file
+> Do you see a QUnit runner with all tests passed?
 
-Do you see a sign in form?
+1. Point your browser to the ``./web/index.html`` file
+> Do you see a sign in form?
+
 Congratulations! You're all set.
 
 Have fun :-)
