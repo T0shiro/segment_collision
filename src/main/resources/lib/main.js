@@ -1,8 +1,8 @@
 requirejs.config({
 
     paths: {
-        jquery: 'jquery-3.1.1.min',
-        qunit: 'qunit-2.1.1',
+        jquery: 'https://code.jquery.com/jquery-3.1.1',
+        qunit: 'https://code.jquery.com/qunit/qunit-2.1.1',
         kotlin: 'kotlin',
         exampleApp: 'kotlin-js-example_main'
     }
