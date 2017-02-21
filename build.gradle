@@ -5,7 +5,6 @@ buildscript {
     ext.kotlin_version = '1.1.0-rc-91'
     ext.selenium_version = '2.52.0'
     ext.web_dir = 'web'
-    ext.test_dir = 'test'
     repositories {
         mavenCentral()
         maven {
@@ -21,7 +20,11 @@ apply plugin: 'kotlin2js'
 
 sourceSets {
     main.kotlin.srcDirs += "src/main/kotlin"
-    test.kotlin.srcDirs += "src/test/kotlin"
+}
+
+compileKotlin2Js {
+    kotlinOptions.moduleKind = "amd"
+    kotlinOptions.sourceMap = true
 }
 
 repositories {
@@ -38,18 +41,16 @@ dependencies {
 
 clean.doFirst() {
     delete("${web_dir}")
-    delete("${test_dir}")
 }
 
 build.doLast() {
     // Copy kotlin.js and kotlin-meta.js from jar into web directory
-    // TODO Replace with CDN link in html when available.
     configurations.compile.each { File file ->
         copy {
             includeEmptyDirs = false
 
             from zipTree(file.absolutePath)
-            into "${projectDir}/${web_dir}"
+            into "${projectDir}/${web_dir}/lib"
             include { fileTreeElement ->
                 def path = fileTreeElement.path
                 path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
@@ -57,31 +58,23 @@ build.doLast() {
         }
     }
 
-    // Unpack built jar into web directory
-    File artifact = new File("build/libs/${project.name}-${project.version}.jar")
+    // Unpack build contents
     copy {
+        File artifact = new File("build/libs/${project.name}-${project.version}.jar")
         includeEmptyDirs = false
 
         from zipTree(artifact)
         into "${web_dir}"
         include { fileTreeElement ->
             def path = fileTreeElement.path
-            !path.startsWith("META-INF/")
+            !(path.startsWith("META-INF/") || path.startsWith("${project.name}"))
         }
     }
-    
-    // Copy test scripts
+
+    // Copy scripts
     copy {
         includeEmptyDirs = false
-        from new File("build/classes/test")
-        into "${test_dir}"
+        from new File("build/classes/main")
+        into "${web_dir}/lib"
     }
-
-    // Copy test resources
-    copy {
-        includeEmptyDirs = false
-        from new File("build/resources/test")
-        into "${test_dir}"
-    }
-
 }

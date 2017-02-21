@@ -13,7 +13,7 @@ and modified it.
 
 1. ``./gradlew clean build``
 
-1. Point your browser to the ``./test/index.html`` file
+1. Point your browser to the ``./web/test.html`` file
 > Do you see a QUnit runner with all tests passed?
 
 1. Point your browser to the ``./web/index.html`` file
