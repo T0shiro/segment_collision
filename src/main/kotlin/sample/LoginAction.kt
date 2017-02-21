@@ -10,7 +10,7 @@ fun processLogin(div: HTMLDivElement, form: HTMLFormElement) {
     val password = form.children["password"] as HTMLInputElement
     if(username.value == "admin" && password.value == "pizza") {
         div.clear()
-        div.appendChild(welcomeView())
+        div.appendChild(welcomeView(logoutAction(div)))
     } else {
         val message = form.children["message"] as HTMLSpanElement
         message.clear()

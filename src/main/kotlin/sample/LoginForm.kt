@@ -1,10 +1,11 @@
 package sample
 
 import org.w3c.dom.HTMLFormElement
+import org.w3c.dom.events.EventListener
 import kotlin.browser.document
 
-fun loginForm(): HTMLFormElement {
-    val form = document.createElement("form")
+fun loginForm(listener: EventListener): HTMLFormElement {
+    val form = document.createElement("form") as HTMLFormElement
 
     val message = document.createElement("span")
     message.setAttribute("id", "message")
@@ -24,5 +25,6 @@ fun loginForm(): HTMLFormElement {
     submit.textContent = "Sign In"
 
     form.append(message, lineBreak(), username, lineBreak(), password, lineBreak(), submit)
-    return form as HTMLFormElement
+    form.addEventListener("submit", listener)
+    return form
 }
