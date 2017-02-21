@@ -6,6 +6,7 @@ import kotlin.browser.document
 
 fun loginForm(listener: EventListener): HTMLFormElement {
     val form = document.createElement("form") as HTMLFormElement
+    form.setAttribute("id", "loginform")
 
     val message = document.createElement("span")
     message.setAttribute("id", "message")

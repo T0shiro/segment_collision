@@ -55,4 +55,9 @@ fun myApp() {
         assert.ok(div.children["welcome"] != null, "Welcome view found!")
     }
 
+    QUnit.test("process a logout") { assert ->
+        processLogout(div)
+        assert.ok(div.children["loginform"] != null, "Login form found!")
+    }
+
 }
