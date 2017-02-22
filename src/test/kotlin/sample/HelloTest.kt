@@ -1,11 +1,10 @@
-package test_sample
+package sample
 
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSpanElement
 import org.w3c.dom.events.EventListener
 import org.w3c.dom.get
-import sample.*
 import kotlin.browser.document
 
 fun myApp() {

@@ -1,4 +1,4 @@
-package test_sample
+package sample
 
 @JsModule("qunit")
 external abstract class Assert {

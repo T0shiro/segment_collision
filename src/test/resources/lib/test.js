@@ -19,7 +19,7 @@ requirejs.config({
 
 requirejs(['qunit', 'kotlin-js-example_test'], function (qunit, exampleAppTest) {
     // run the tests.
-    exampleAppTest.test_sample.myApp();
+    exampleAppTest.sample.myApp();
 
     // start QUnit.
     QUnit.load();
