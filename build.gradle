@@ -20,9 +20,15 @@ apply plugin: 'kotlin2js'
 
 sourceSets {
     main.kotlin.srcDirs += "src/main/kotlin"
+    test.kotlin.srcDirs += "src/test/kotlin"
 }
 
 compileKotlin2Js {
+    kotlinOptions.moduleKind = "amd"
+    kotlinOptions.sourceMap = true
+}
+
+compileTestKotlin2Js {
     kotlinOptions.moduleKind = "amd"
     kotlinOptions.sourceMap = true
 }
@@ -59,6 +65,7 @@ build.doLast() {
     }
 
     // Unpack build contents
+    // TODO Remove this step when a CDN link is available.
     copy {
         File artifact = new File("build/libs/${project.name}-${project.version}.jar")
         includeEmptyDirs = false
@@ -71,10 +78,23 @@ build.doLast() {
         }
     }
 
-    // Copy scripts
+    // Copy scripts to web directory
     copy {
         includeEmptyDirs = false
         from new File("build/classes/main")
         into "${web_dir}/lib"
     }
+
+    copy {
+        includeEmptyDirs = false
+        from new File("build/classes/test")
+        into "${web_dir}/lib"
+    }
+
+    copy {
+        includeEmptyDirs = false
+        from new File("build/resources/test")
+        into "${web_dir}"
+    }
+
 }
