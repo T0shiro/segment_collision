@@ -11,35 +11,35 @@ fun myApp() {
     val div = document.createElement("div") as HTMLDivElement
     val listener = EventListener {}
 
-    QUnit.test("build a linebreak") { assert ->
-        assert.ok(lineBreak().tagName == "BR", "BR tag verified!")
+    QUnit.test("Build a linebreak") { assert ->
+        assert.equal(lineBreak().tagName, "BR", "BR tag OK!")
     }
 
-    QUnit.test("build a login form") { assert ->
+    QUnit.test("Build a login form") { assert ->
         val form = loginForm(loginAction(div))
-        assert.ok(form.tagName == "FORM", "FORM tag verified!")
+        assert.equal(form.tagName, "FORM", "FORM tag OK!")
 
-        assert.ok(form.getElementsByTagName("INPUT").length == 2, "INPUT count verified!")
-        assert.ok(form.getElementsByTagName("BUTTON").length == 1, "BUTTON count verified!")
+        assert.equal(form.getElementsByTagName("INPUT").length, 2, "INPUT elements OK!")
+        assert.equal(form.getElementsByTagName("BUTTON").length, 1, "BUTTON element OK!")
 
-        assert.ok(form.children["username"] != null, "Username found!")
-        assert.ok(form.children["password"] != null, "Password found!")
+        assert.ok(form.children["username"] != null, "Username OK!")
+        assert.ok(form.children["password"] != null, "Password OK!")
     }
 
-    QUnit.test("build a welcome view") { assert ->
+    QUnit.test("Build a welcome view") { assert ->
         val view = welcomeView(listener)
-        assert.ok(view.tagName == "DIV", "DIV tag verified!")
-        assert.ok(view.getAttribute("id") == "welcome", "DIV id verified!")
+        assert.equal(view.tagName, "DIV", "DIV tag OK!")
+        assert.equal(view.getAttribute("id"), "welcome", "DIV id OK!")
 
-        assert.ok(view.children["message"] != null, "Message found!")
-        assert.ok(view.children["signout"] != null, "Signout found!")
+        assert.ok(view.children["message"] != null, "Message OK!")
+        assert.ok(view.children["signout"] != null, "Signout OK!")
     }
 
-    QUnit.test("process invalid login") { assert ->
+    QUnit.test("Process invalid login") { assert ->
         val form = loginForm(listener)
         processLogin(div, form)
         val message = form.children["message"] as HTMLSpanElement
-        assert.ok(message.textContent == "Invalid username or password.", "Error message verified!")
+        assert.equal(message.textContent, "Invalid username or password.", "Login error message OK!")
     }
 
     QUnit.test("process valid login") { assert ->
@@ -50,7 +50,7 @@ fun myApp() {
         password.value = "pizza"
 
         processLogin(div, form)
-        assert.ok(div.children["welcome"] != null, "Welcome view found!")
+        assert.ok(div.children["welcome"] != null, "Welcome view OK!")
     }
 
     QUnit.test("process a logout") { assert ->

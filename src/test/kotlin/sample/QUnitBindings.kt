@@ -2,7 +2,8 @@ package sample
 
 @JsModule("qunit")
 external abstract class Assert {
-    fun ok(actual: Boolean, message: String?): Unit
+    fun ok(actual: Boolean, message: String): Unit
+    fun <T> equal(actual: T, expected: T, message: String): Unit
 }
 
 @JsModule("qunit")
