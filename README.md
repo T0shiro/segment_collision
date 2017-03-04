@@ -5,7 +5,7 @@ for developers targeting the Kotlin 1.1 JS compiler.
 It was hard to find a working, up-to-date example, so I decided
 to take [this one](https://github.com/JetBrains/kotlin/tree/master/libraries/examples/browser-example),
 read [this tutorial](https://kotlinlang.org/docs/tutorials/javascript/getting-started-gradle/getting-started-with-gradle.html)
-and modified it.
+and took it from there.
 
 1. ``git clone https://github.com/bascan/kotlin-js-example.git``
 
@@ -21,5 +21,8 @@ and modified it.
 > Login with admin / pizza
  
 Congratulations! You're all set.
+
+**Note for IntelliJ IDEA users:** make sure you're running the latest 2017.1 EAP
+build before you import this project.
 
 Have fun :-)
