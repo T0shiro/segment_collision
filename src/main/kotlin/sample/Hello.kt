@@ -25,7 +25,20 @@ class FancyLines {
     val width = canvas.width.toDouble()
 
     fun run() {
-        (1..10).forEach { Segment(0, 0, 0, 0, width, height).draw(context, width, height) }
+        var segments : MutableList<Segment> = mutableListOf<Segment>()
+        (1..10).forEach { segments.add(Segment(0, 0, 0, 0, width, height)) }
+        draw(segments)
+    }
+
+    private fun draw(segments : List<Segment>) {
+        context.beginPath()
+        segments.forEach { segment ->
+            run {
+                context.moveTo(segment.x, segment.y)
+                context.lineTo(segment.x + segment.length, segment.y)
+            }
+        }
+        context.stroke()
     }
 
 }
