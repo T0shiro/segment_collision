@@ -4,6 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.document
 import kotlin.browser.window
+import kotlin.math.pow
 
 fun myApp() {
     FancyLines().run()
@@ -24,7 +25,7 @@ class FancyLines {
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
     val FPS = 40
-    val segmentAmount = 100
+    val segmentAmount = 10
 
 
     fun run() {
@@ -38,6 +39,7 @@ class FancyLines {
                     segment.collision(canvas.width, canvas.height)
                     segment.rotate()
                     segment.translate()
+                    detectCollisions(segments)
                 }
             }
             draw(segments)
@@ -57,6 +59,35 @@ class FancyLines {
             }
         }
         context.stroke()
+    }
+
+    private fun detectCollisions(segments : List<Segment>){
+        context.fillStyle = "rgba("+255+","+0+","+0+")"
+        segments.forEach { segment ->
+            run {
+                // segment = AB, segment2 = CD
+                segments.forEach { segment2 ->
+                    run {
+                        var ac = kotlin.math.sqrt((segment.startx - segment2.startx).pow(2) + (segment.starty - segment2.starty).pow(2))
+                        var abac = segment.length * ac * (ac/segment.length)
+                        var ad = kotlin.math.sqrt((segment.startx - segment2.endx).pow(2) + (segment.starty - segment2.endy).pow(2))
+                        var abad = segment.length * ad * (ad/segment.length)
+                        if (abac >= 0 && abad < 0 || abac < 0 && abad >= 0){
+                            var cdca = segment.length * ac * (ac/segment.length)
+                            var cb = kotlin.math.sqrt((segment.endx - segment2.startx).pow(2) + (segment.endy - segment2.starty).pow(2))
+                            var cdcb = segment.length * cb * (cb/segment.length)
+                            if (cdca >= 0 && cdcb < 0 || cdca < 0 && cdcb >= 0){
+                                var x = (abac * segment2.endx - abad * segment2.startx) / (abac - abad)
+                                var y = (abac * segment2.endy - abad * segment2.starty) / (abac - abad)
+                                context.fillRect(x, y, 5.0, 5.0)
+                                console.log("$x $y")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        context.fillStyle = "rgba("+0+","+0+","+0+")"
     }
 
 }
