@@ -4,8 +4,8 @@ package sample
 class Segment {
     var x = 0.0
     var y = 0.0
-    var vx = 30
-    var vy = 30
+    var vx = 0
+    var vy = 0
     var angle = (0 until 2*kotlin.math.PI.toInt()).shuffled()[0].toDouble()
     var rotationSpeed = kotlin.math.PI/2
     var length = 80
@@ -24,5 +24,17 @@ class Segment {
     fun translate(){
         this.x += vx
         this.y += vy
+    }
+
+    fun collision(width : Int, height : Int){
+        if (this.x >= width || this.x < 0){
+            console.log(this.x)
+            this.angle = kotlin.math.PI - this.angle
+            this.vy = -vy
+        } else if (this.y >= height|| this.y < 0){
+            console.log(this.y)
+            this.angle = kotlin.math.PI - this.angle
+            this.vx = -vx
+        }
     }
 }
