@@ -43,9 +43,9 @@ class Segment {
     }
 
     fun collision(width: Int, height: Int) {
-        if (this.x >= width || this.x < 0 || this.y >= height || this.y < 0) {
+        if (this.x >= width || this.x <= 0 || this.y >= height || this.y <= 0) {
             var oldRotationSpeed = rotationSpeed
-            this.rotationSpeed = -0.5 * this.rotationSpeed - 3 * (vy * Math.cos(angle) - vx * Math.sin(angle)) / (2*length)
+            this.rotationSpeed = -0.5 * oldRotationSpeed - 3 * (vy * Math.cos(angle) - vx * Math.sin(angle)) / (2*length)
             this.vx = -vx + (length / 2) * Math.sin(angle) * (oldRotationSpeed + rotationSpeed)
             this.vy = -vy - (length / 2) * Math.cos(angle) * (oldRotationSpeed + rotationSpeed)
             console.log(this.x)
