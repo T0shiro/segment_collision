@@ -23,12 +23,13 @@ class FancyLines {
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
-//    val rotationMatrix : Array<IntArray> = arrayOf(intArrayOf(kotlin.math.cos()), intArrayOf(10, 20, 30, 40, 50))
+    val FPS = 40
+    val segmentAmount = 100
 
 
     fun run() {
         var segments : MutableList<Segment> = mutableListOf<Segment>()
-        (1..10).forEach { segments.add(Segment(30, 30, width, height)) }
+        (1..segmentAmount).forEach { segments.add(Segment(100, 100, width, height, FPS)) }
 
         window.setInterval({
             context.clearRect(0.0,0.0, canvas.width.toDouble(), canvas.height.toDouble())
@@ -40,7 +41,7 @@ class FancyLines {
                 }
             }
             draw(segments)
-        }, 500)
+        }, 1000/FPS)
     }
 
     private fun draw(segments : List<Segment>) {
