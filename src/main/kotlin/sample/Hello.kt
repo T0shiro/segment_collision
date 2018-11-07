@@ -26,7 +26,7 @@ class FancyLines {
 
     fun run() {
         var segments : MutableList<Segment> = mutableListOf<Segment>()
-        (1..10).forEach { segments.add(Segment(0, 0, 0, 0, width, height)) }
+        (1..10).forEach { segments.add(Segment(0, 0, 0, width, height)) }
         draw(segments)
     }
 
@@ -35,7 +35,7 @@ class FancyLines {
         segments.forEach { segment ->
             run {
                 context.moveTo(segment.x, segment.y)
-                context.lineTo(segment.x + segment.length, segment.y)
+                context.lineTo(segment.x + kotlin.math.cos(segment.angle)*segment.length, segment.y + kotlin.math.sin(segment.angle)*segment.length)
             }
         }
         context.stroke()
