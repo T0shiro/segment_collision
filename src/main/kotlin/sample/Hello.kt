@@ -27,7 +27,16 @@ class FancyLines {
     fun run() {
         var segments : MutableList<Segment> = mutableListOf<Segment>()
         (1..10).forEach { segments.add(Segment(0, 0, 0, width, height)) }
-        draw(segments)
+
+        window.setInterval({
+            context.clearRect(0.0,0.0, canvas.width.toDouble(), canvas.height.toDouble())
+            segments.forEach { segment ->
+                run {
+                    segment.rotate()
+                }
+            }
+            draw(segments)
+        }, 100)
     }
 
     private fun draw(segments : List<Segment>) {
