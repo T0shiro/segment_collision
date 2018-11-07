@@ -2,7 +2,7 @@ group 'com.edutron'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.2.50'
     ext.web_dir = 'web'
     repositories {
         mavenCentral()
