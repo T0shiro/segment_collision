@@ -12,20 +12,21 @@ class Segment {
     var rotationSpeed = kotlin.math.PI / 2
     var length = 80
 
-    constructor(vx: Double, vy: Double, maxX: Double, maxY: Double) {
+    constructor(vx: Double, vy: Double, maxX : Double, maxY : Double, fps : Int) {
         this.x = (0 until maxX.toInt()).shuffled()[0].toDouble()
         this.y = (0 until maxY.toInt()).shuffled()[0].toDouble()
-        this.vx = vx
-        this.vy = vy
+        this.vx = vx/fps
+        this.vy = vy/fps
+        this.rotationSpeed /= fps
     }
 
-    fun rotate() {
-        this.angle += rotationSpeed / 2
+    fun rotate(){
+        this.angle += rotationSpeed
     }
 
-    fun translate() {
-        this.x += vx
-        this.y += vy
+    fun translate(){
+        this.x += this.vx
+        this.y += this.vy
     }
 
     fun collision(width: Int, height: Int) {
