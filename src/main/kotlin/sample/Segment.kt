@@ -22,19 +22,18 @@ class Segment {
     }
 
     fun translate(){
-        this.x += vx
-        this.y += vy
+        this.x += this.vx
+        this.y += this.vy
     }
 
     fun collision(width : Int, height : Int){
         if (this.x >= width || this.x < 0){
-            console.log(this.x)
-            this.angle = kotlin.math.PI - this.angle
-            this.vy = -vy
-        } else if (this.y >= height|| this.y < 0){
-            console.log(this.y)
+            console.log("Collision x $x")
             this.angle = kotlin.math.PI - this.angle
             this.vx = -vx
+        } else if (this.y >= height|| this.y < 0){
+            this.angle = kotlin.math.PI - this.angle
+            this.vy = -vy
         }
     }
 }

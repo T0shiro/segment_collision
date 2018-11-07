@@ -34,9 +34,9 @@ class FancyLines {
             context.clearRect(0.0,0.0, canvas.width.toDouble(), canvas.height.toDouble())
             segments.forEach { segment ->
                 run {
+                    segment.collision(canvas.width, canvas.height)
                     segment.rotate()
                     segment.translate()
-                    segment.collision(canvas.width, canvas.height)
                 }
             }
             draw(segments)
