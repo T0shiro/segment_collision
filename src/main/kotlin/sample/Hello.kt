@@ -43,8 +43,12 @@ class FancyLines {
         context.beginPath()
         segments.forEach { segment ->
             run {
-                context.moveTo(segment.x, segment.y)
-                context.lineTo(segment.x + kotlin.math.cos(segment.angle)*segment.length, segment.y + kotlin.math.sin(segment.angle)*segment.length)
+                var x = segment.x - kotlin.math.cos(segment.angle)*(segment.length/2)
+                var y = segment.y - kotlin.math.sin(segment.angle)*(segment.length/2)
+                var x2 = segment.x + kotlin.math.cos(segment.angle)*(segment.length/2)
+                var y2 = segment.y + kotlin.math.sin(segment.angle)*(segment.length/2)
+                context.moveTo(x, y)
+                context.lineTo(x2, y2)
             }
         }
         context.stroke()
