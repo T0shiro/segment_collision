@@ -25,7 +25,7 @@ class FancyLines {
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
     val FPS = 40
-    val segmentAmount = 10
+    val segmentAmount = 100
 
 
     fun run() {
@@ -68,19 +68,23 @@ class FancyLines {
                 // segment = AB, segment2 = CD
                 segments.forEach { segment2 ->
                     run {
-                        var ac = kotlin.math.sqrt((segment.startx - segment2.startx).pow(2) + (segment.starty - segment2.starty).pow(2))
-                        var abac = segment.length * ac * (ac/segment.length)
-                        var ad = kotlin.math.sqrt((segment.startx - segment2.endx).pow(2) + (segment.starty - segment2.endy).pow(2))
-                        var abad = segment.length * ad * (ad/segment.length)
+                        // ab = segment.endx - segment.startx, segment.endy - segment.starty
+                        // cd = segment2.endx - segment2.startx, segment2.endy - segment2.starty
+                        // ac = segment2.startx - segment.startx, segment2.starty - segment.starty
+                        // ad = segment2.endx - segment.startx, segment2.endy - segment.starty
+                        // ca = segment.startx - segment2.startx, segment.starty - segment2.starty
+                        // cb = segment.endx - segment2.startx, segment.endy - segment2.starty
+
+                        var abac = (segment.endx - segment.startx) * (segment2.startx - segment.startx) + (segment.endy - segment.starty) * (segment2.starty - segment.starty)
+                        var abad = (segment.endx - segment.startx) * (segment2.endx - segment.startx) + (segment.endy - segment.starty) * (segment2.endy - segment.starty)
+
                         if (abac >= 0 && abad < 0 || abac < 0 && abad >= 0){
-                            var cdca = segment.length * ac * (ac/segment.length)
-                            var cb = kotlin.math.sqrt((segment.endx - segment2.startx).pow(2) + (segment.endy - segment2.starty).pow(2))
-                            var cdcb = segment.length * cb * (cb/segment.length)
+                            var cdca = (segment2.endx - segment2.startx) * (segment.startx - segment2.startx) + (segment2.endy - segment2.starty) * (segment.starty - segment2.starty)
+                            var cdcb = (segment2.endx - segment2.startx) * (segment.endx - segment2.startx) + (segment2.endy - segment2.starty) * (segment.endy - segment2.starty)
                             if (cdca >= 0 && cdcb < 0 || cdca < 0 && cdcb >= 0){
                                 var x = (abac * segment2.endx - abad * segment2.startx) / (abac - abad)
                                 var y = (abac * segment2.endy - abad * segment2.starty) / (abac - abad)
                                 context.fillRect(x, y, 5.0, 5.0)
-                                console.log("$x $y")
                             }
                         }
                     }
