@@ -30,7 +30,7 @@ class FancyLines {
 
     fun run() {
         var segments : MutableList<Segment> = mutableListOf<Segment>()
-        (1..segmentAmount).forEach { segments.add(Segment(100, 100, width, height, FPS)) }
+        (1..segmentAmount).forEach { segments.add(Segment(100.0, 100.0, width, height, FPS)) }
 
         window.setInterval({
             context.clearRect(0.0,0.0, canvas.width.toDouble(), canvas.height.toDouble())

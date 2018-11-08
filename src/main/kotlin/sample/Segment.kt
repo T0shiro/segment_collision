@@ -1,5 +1,7 @@
 package sample
 
+import kotlin.js.Math
+
 
 class Segment {
     var x = 0.0
@@ -8,13 +10,13 @@ class Segment {
     var starty = 0.0
     var endx = 0.0
     var endy = 0.0
-    var vx = 0
-    var vy = 0
-    var angle = (0 until 2*kotlin.math.PI.toInt()).shuffled()[0].toDouble()
-    var rotationSpeed = kotlin.math.PI/2
+    var vx = 0.0
+    var vy = 0.0
+    var angle = (0 until 2 * kotlin.math.PI.toInt()).shuffled()[0].toDouble()
+    var rotationSpeed = kotlin.math.PI / 2
     var length = 80
 
-    constructor(vx: Int, vy: Int, maxX : Double, maxY : Double, fps : Int) {
+    constructor(vx: Double, vy: Double, maxX : Double, maxY : Double, fps : Int) {
         this.x = (0 until maxX.toInt()).shuffled()[0].toDouble()
         this.y = (0 until maxY.toInt()).shuffled()[0].toDouble()
         updateExtremities()
@@ -40,13 +42,13 @@ class Segment {
         updateExtremities()
     }
 
-    fun collision(width : Int, height : Int){
-        if (this.x >= width || this.x < 0){
-            this.angle = kotlin.math.PI - this.angle
-            this.vx = -vx
-        } else if (this.y >= height|| this.y < 0){
-            this.angle = kotlin.math.PI - this.angle
-            this.vy = -vy
+    fun collision(width: Int, height: Int) {
+        if (this.x >= width || this.x <= 0 || this.y >= height || this.y <= 0) {
+            var oldRotationSpeed = rotationSpeed
+            this.rotationSpeed = -0.5 * oldRotationSpeed - 3 * (vy * Math.cos(angle) - vx * Math.sin(angle)) / (2*length)
+            this.vx = -vx + (length / 2) * Math.sin(angle) * (oldRotationSpeed + rotationSpeed)
+            this.vy = -vy - (length / 2) * Math.cos(angle) * (oldRotationSpeed + rotationSpeed)
+            console.log(this.x)
         }
     }
 }
