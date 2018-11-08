@@ -84,7 +84,7 @@ class FancyLines {
                             if (cdca >= 0 && cdcb < 0 || cdca < 0 && cdcb >= 0){
                                 var x = (abac * segment2.endx - abad * segment2.startx) / (abac - abad)
                                 var y = (abac * segment2.endy - abad * segment2.starty) / (abac - abad)
-                                context.fillRect(x, y, 5.0, 5.0)
+                                context.fillRect(x, y, 2.0, 2.0)
                             }
                         }
                     }
