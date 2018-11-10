@@ -1,8 +1,5 @@
 package sample
 
-import kotlin.js.Math
-
-
 class Segment {
     var x = 0.0
     var y = 0.0
