@@ -42,29 +42,29 @@ class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
 
     fun queryRange(range: Box): MutableList<Segment> {
         // Préparer le tableau de résultats
-        val pointsInRange: MutableList<Segment> = mutableListOf()
+        val segmentsInRange: MutableList<Segment> = mutableListOf()
 
         // Tout interrompre si la «zone de recherche» n'intersecte pas ce quadrant
         if (!boundary!!.intersectsWithOtherBox(range))
-            return pointsInRange // liste vide
+            return segmentsInRange // liste vide
 
         // Vérifier les objets à ce niveau de quadrant
         for (p in 0..segments.size) {
             if (range.containsSegment(segments[p]))
-                pointsInRange.add(segments[p])
+                segmentsInRange.add(segments[p])
         }
 
         // Terminer ici, s'il n'y a pas d'enfant
         if (northWest == null)
-            return pointsInRange
+            return segmentsInRange
 
         // Sinon, relancer la recherche sur les 4 enfants et ajouter les points trouvés
-        pointsInRange.addAll(northWest!!.queryRange(range))
-        pointsInRange.addAll(northEast!!.queryRange(range))
-        pointsInRange.addAll(southWest!!.queryRange(range))
-        pointsInRange.addAll(southEast!!.queryRange(range))
+        segmentsInRange.addAll(northWest!!.queryRange(range))
+        segmentsInRange.addAll(northEast!!.queryRange(range))
+        segmentsInRange.addAll(southWest!!.queryRange(range))
+        segmentsInRange.addAll(southEast!!.queryRange(range))
 
-        return pointsInRange
+        return segmentsInRange
     }
 
     fun subdivide() {

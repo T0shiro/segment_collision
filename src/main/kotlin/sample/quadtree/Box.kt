@@ -15,7 +15,10 @@ class Box {
 
 
     fun containsSegment(s : Segment) : Boolean {
-        return false
+        return s.x >= xCenter-halfDimension
+                && s.x <= xCenter+halfDimension
+                && s.y >= yCenter-halfDimension
+                && s.y <= yCenter+halfDimension
     }
     fun intersectsWithOtherBox(other : Box) : Boolean {
         return false

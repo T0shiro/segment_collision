@@ -2,6 +2,7 @@ package sample
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
+import sample.quadtree.QuadTree
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.clear
@@ -17,8 +18,8 @@ fun initalizeCanvas(): HTMLCanvasElement {
 
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
 
-    context.canvas.width = 500
-    context.canvas.height = 500
+    context.canvas.width = 512
+    context.canvas.height = 512
     document.body!!.appendChild(canvas)
     return canvas
 }
@@ -27,13 +28,19 @@ class FancyLines {
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
-    val FPS = 40
-    val segmentAmount = 200
+    val FPS = 60
+    val segmentAmount = 400
+
+    val quadtree : QuadTree = QuadTree(256, 256, 256)
 
 
     fun run() {
         var segments : MutableList<Segment> = mutableListOf<Segment>()
-        (1..segmentAmount).forEach { segments.add(Segment(100.0, 100.0, width, height, FPS)) }
+        (1..segmentAmount).forEach {
+            val segment = Segment(100.0, 100.0, width, height, FPS)
+            segments.add(segment)
+            quadtree.insert(segment)
+        }
 
         window.setInterval({
             context.clearRect(0.0,0.0, canvas.width.toDouble(), canvas.height.toDouble())
@@ -42,9 +49,9 @@ class FancyLines {
                     segment.collision(canvas.width, canvas.height)
                     segment.rotate()
                     segment.translate()
-                    detectCollisions(segments)
                 }
             }
+            detectCollisions(segments)
             draw(segments)
         }, 1000/FPS)
     }
@@ -80,7 +87,7 @@ class FancyLines {
                     if (alpha < 0 != beta < 0) {
                         var x = (alpha * segments[i].endx - beta * segments[i].startx) / (alpha - beta)
                         var y = (alpha * segments[i].endy - beta * segments[i].starty) / (alpha - beta)
-                        context.fillRect(x, y, 2.0, 2.0)
+                        context.fillRect(x, y, 3.0, 3.0)
                     }
                 }
             }
