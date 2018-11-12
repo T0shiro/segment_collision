@@ -2,6 +2,7 @@ package sample
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
+import sample.quadtree.Box
 import sample.quadtree.QuadTree
 import kotlin.browser.document
 import kotlin.browser.window
@@ -51,7 +52,7 @@ class FancyLines {
                     segment.translate()
                 }
             }
-            detectCollisions(segments)
+            detectCollisions(quadtree.queryRange(Box(256, 256, 256)))
             draw(segments)
         }, 1000/FPS)
     }

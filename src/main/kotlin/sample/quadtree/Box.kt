@@ -14,13 +14,17 @@ class Box {
     }
 
 
-    fun containsSegment(s : Segment) : Boolean {
-        return s.x >= xCenter-halfDimension
-                && s.x <= xCenter+halfDimension
-                && s.y >= yCenter-halfDimension
-                && s.y <= yCenter+halfDimension
+    fun containsSegment(s: Segment): Boolean {
+        return s.x >= xCenter - halfDimension
+                && s.x <= xCenter + halfDimension
+                && s.y >= yCenter - halfDimension
+                && s.y <= yCenter + halfDimension
     }
-    fun intersectsWithOtherBox(other : Box) : Boolean {
-        return false
+
+    fun intersectsWithOtherBox(other: Box): Boolean {
+        return other.xCenter - other.halfDimension < xCenter + halfDimension
+                && other.xCenter + other.halfDimension > xCenter - halfDimension
+                && other.yCenter - other.halfDimension < yCenter + halfDimension
+                && other.yCenter + other.halfDimension > yCenter - halfDimension
     }
 }

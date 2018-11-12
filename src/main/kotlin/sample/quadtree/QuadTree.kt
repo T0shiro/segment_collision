@@ -74,4 +74,24 @@ class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
         southWest = QuadTree(xCenter - half, yCenter - half, half)
         southEast = QuadTree(xCenter + half, yCenter - half, half)
     }
+
+    fun delete(segment: Segment) : Boolean {
+        if (!boundary!!.containsSegment(segment))
+            return false
+
+        if (segments.size < QT_NODE_CAPACITY) {
+            segments.add(segment)
+            return true
+        }
+
+        if (northWest == null)
+            segments.remove(segment)
+
+        if (northWest!!.delete(segment)) return true
+        if (northEast!!.delete(segment)) return true
+        if (southWest!!.delete(segment)) return true
+        if (southEast!!.delete(segment)) return true
+
+        return false
+    }
 }
