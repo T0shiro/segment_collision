@@ -52,6 +52,7 @@ class FancyLines {
                     segment.translate()
                 }
             }
+//            detectCollisions(segments)
             detectCollisions(quadtree.queryRange(Box(256, 256, 256)))
             draw(segments)
         }, 1000/FPS)

@@ -49,7 +49,7 @@ class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
             return segmentsInRange // liste vide
 
         // Vérifier les objets à ce niveau de quadrant
-        for (p in 0..segments.size) {
+        for (p in 0 until segments.size) {
             if (range.containsSegment(segments[p]))
                 segmentsInRange.add(segments[p])
         }
