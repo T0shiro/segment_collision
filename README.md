@@ -1,22 +1,19 @@
-# Kotlin 1.1 JS Example
-This project aims to provide a minimal working Gradle template
-for developers targeting the Kotlin 1.1 JS compiler. 
+# Segment collisions
+This project aims to show collisions of segments using Kotlin.
  
-1. ``git clone https://github.com/bascan/kotlin-js-example.git``
+## Members
+- GARDAIRE Loïc
+- MORTARA Johann
 
-1. ``cd kotlin-js-example``
 
+## How to run it 
 1. ``./gradlew clean build``
+1. Open ``./web/index.html`` file in your browser
 
-1. Point your browser to the ``./web/test.html`` file
-> Do you see a QUnit runner with all tests passed?
+## Methods used to detect collisions
 
-1. Point your browser to the ``./web/index.html`` file
-> Do you see a sign in form?
-> Login with admin / pizza
- 
-Congratulations! You're all set.
+### Naive method : Double for loops
+Each frame, we loop on each segment and check if another segment collides with it.
 
-**Note for IntelliJ IDEA users:** make sure you're running version 2017.1 or later before you import this project.
-
-Have fun :-)
+### Optimisation : Quadtree
+Each frame, we subdivide the canvas in 4 parts as many times as necessary to have a minimum of segments in each part.
