@@ -12,6 +12,14 @@ fun myApp() {
 }
 
 val canvas = initalizeCanvas()
+val fps = initializeText()
+
+fun initializeText(): Text {
+    val fps = document.createTextNode("FPS :")
+    document.body!!.appendChild(fps)
+    return fps
+}
+
 fun initalizeCanvas(): HTMLCanvasElement {
     val canvas = document.createElement("canvas") as HTMLCanvasElement
 
@@ -19,6 +27,7 @@ fun initalizeCanvas(): HTMLCanvasElement {
 
     context.canvas.width = 512
     context.canvas.height = 512
+    canvas.style.border = "solid"
     document.body!!.appendChild(canvas)
     return canvas
 }
@@ -34,7 +43,6 @@ class SegmentCollisions {
 
     fun run() {
         var segments: MutableList<Segment> = mutableListOf<Segment>()
-        canvas.style.border = "solid"
         (1..segmentAmount).forEach {
             val segment = Segment(100.0, 100.0, width, height)
             segments.add(segment)
@@ -59,7 +67,7 @@ class SegmentCollisions {
         val now = Date.now()
         if (now > time + 1000) {
             window.requestAnimationFrame { updateDisplay(segments, now, 0) }
-            //UPDATE DISPLAY
+            fps.textContent = "FPS : $frames"
         } else {
             window.requestAnimationFrame { updateDisplay(segments, time, frames+1) }
         }
