@@ -4,7 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import sample.Segment
 
 class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
-    var MAX_NODE_CAPACITY = 4
+    var MAX_NODE_CAPACITY = 5
 
     var boundary: Box? = null
 
@@ -102,18 +102,5 @@ class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
             }
         }
         context.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + ")"
-    }
-
-    fun deleteAll(): Boolean {
-        this.segments = mutableListOf()
-
-        if (northEast != null) {
-            northWest!!.deleteAll()
-            northEast!!.deleteAll()
-            southEast!!.deleteAll()
-            southWest!!.deleteAll()
-        }
-
-        return true
     }
 }

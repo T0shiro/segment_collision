@@ -36,9 +36,9 @@ class SegmentCollisions {
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
-    val segmentAmount = 200
+    val segmentAmount = 3000
 
-    val quadtree: QuadTree = QuadTree(256, 256, 256)
+    var quadtree: QuadTree = QuadTree(256, 256, 256)
 
 
     fun run() {
@@ -52,7 +52,7 @@ class SegmentCollisions {
 
     fun updateDisplay(segments: List<Segment>, time : Double, frames : Int) {
         context.clearRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
-        quadtree.deleteAll()
+        quadtree = QuadTree(256, 256, 256)
         segments.forEach { segment ->
             run {
                 segment.collision(canvas.width, canvas.height)
@@ -61,9 +61,9 @@ class SegmentCollisions {
                 quadtree.insert(segment)
             }
         }
-        detectCollisions(segments)
-        quadtree.queryRange(Box(256, 256, 512), context)
         draw(segments)
+//        detectCollisions(segments)
+        quadtree.queryRange(Box(256, 256, 512), context)
         val now = Date.now()
         if (now > time + 1000) {
             window.requestAnimationFrame { updateDisplay(segments, now, 0) }
