@@ -34,6 +34,7 @@ class SegmentCollisions {
 
     fun run() {
         var segments: MutableList<Segment> = mutableListOf<Segment>()
+        canvas.style.border = "solid"
         (1..segmentAmount).forEach {
             val segment = Segment(100.0, 100.0, width, height)
             segments.add(segment)
