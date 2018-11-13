@@ -45,7 +45,6 @@ class Segment {
             this.rotationSpeed = -0.5 * oldRotationSpeed - 3 * (vy * kotlin.math.cos(angle) - vx * kotlin.math.sin(angle)) / (2*length)
             this.vx = -vx + (length / 2) * kotlin.math.sin(angle) * (oldRotationSpeed + rotationSpeed)
             this.vy = -vy - (length / 2) * kotlin.math.cos(angle) * (oldRotationSpeed + rotationSpeed)
-//            console.log(this.x)
         }
     }
 }

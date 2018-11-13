@@ -30,7 +30,7 @@ class FancyLines {
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
     val FPS = 60
-    val segmentAmount = 400
+    val segmentAmount = 200
 
     val quadtree : QuadTree = QuadTree(256, 256, 256)
 
@@ -40,20 +40,21 @@ class FancyLines {
         (1..segmentAmount).forEach {
             val segment = Segment(100.0, 100.0, width, height, FPS)
             segments.add(segment)
-            quadtree.insert(segment)
         }
 
         window.setInterval({
             context.clearRect(0.0,0.0, canvas.width.toDouble(), canvas.height.toDouble())
+            quadtree.deleteAll()
             segments.forEach { segment ->
                 run {
                     segment.collision(canvas.width, canvas.height)
                     segment.rotate()
                     segment.translate()
+                    quadtree.insert(segment)
                 }
             }
-//            detectCollisions(segments)
-            detectCollisions(quadtree.queryRange(Box(256, 256, 256)))
+            detectCollisions(segments)
+            quadtree.queryRange(Box(256, 256, 512), context)
             draw(segments)
         }, 1000/FPS)
     }
