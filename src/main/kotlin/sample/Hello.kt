@@ -36,7 +36,7 @@ class SegmentCollisions {
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
-    val segmentAmount = 3000
+    val segmentAmount = 4000
 
     var quadtree: QuadTree = QuadTree(256, 256, 256)
 
@@ -44,7 +44,7 @@ class SegmentCollisions {
     fun run() {
         var segments: MutableList<Segment> = mutableListOf<Segment>()
         (1..segmentAmount).forEach {
-            val segment = Segment(100.0, 100.0, width, height)
+            val segment = Segment(width, height)
             segments.add(segment)
         }
         updateDisplay(segments, Date.now(), 0)
