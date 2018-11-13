@@ -22,7 +22,7 @@ class Segment {
         this.y = (0 until maxY.toInt()).shuffled()[0].toDouble()
         updateExtremities()
         this.vx = vx/SPEED_DIVIDER
-        this.vy /= vy/SPEED_DIVIDER
+        this.vy = vy/SPEED_DIVIDER
         this.rotationSpeed /= ROTATION_DIVIDER
     }
 
