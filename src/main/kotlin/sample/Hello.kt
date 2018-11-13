@@ -43,7 +43,7 @@ class SegmentCollisions {
     fun run(segmentAmount: Int, quad: Boolean, bench: Boolean) {
         var segments: MutableList<Segment> = mutableListOf<Segment>()
         (1..segmentAmount).forEach {
-            val segment = Segment(100.0, 100.0, width, height)
+            val segment = Segment(width, height)
             segments.add(segment)
         }
         updateDisplay(segments, Date.now(), 0, quad, bench)
