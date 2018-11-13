@@ -36,6 +36,7 @@ class FancyLines {
 
 
     fun run() {
+        canvas.style.border = "solid"
         var segments : MutableList<Segment> = mutableListOf<Segment>()
         (1..segmentAmount).forEach {
             val segment = Segment(100.0, 100.0, width, height, FPS)

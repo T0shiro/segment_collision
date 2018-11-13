@@ -1,5 +1,7 @@
 package sample
 
+import kotlin.math.abs
+
 class Segment {
     var x = 0.0
     var y = 0.0
@@ -13,38 +15,76 @@ class Segment {
     var rotationSpeed = kotlin.math.PI / 2
     var length = 80
 
-    constructor(vx: Double, vy: Double, maxX : Double, maxY : Double, fps : Int) {
-        this.x = (0 until maxX.toInt()).shuffled()[0].toDouble()
-        this.y = (0 until maxY.toInt()).shuffled()[0].toDouble()
+    constructor(vx: Double, vy: Double, maxX: Double, maxY: Double, fps: Int) {
+        this.x = (0 until maxX.toInt() - (length / 2)).shuffled()[0].toDouble()
+        this.y = (0 until maxY.toInt() - (length / 2)).shuffled()[0].toDouble()
         updateExtremities()
-        this.vx = vx/fps
-        this.vy = vy/fps
+        this.vx = vx / fps
+        this.vy = vy / fps
         this.rotationSpeed /= fps
     }
 
     fun updateExtremities() {
-        this.startx = this.x - kotlin.math.cos(this.angle)*(this.length/2)
-        this.starty = this.y - kotlin.math.sin(this.angle)*(this.length/2)
-        this.endx = this.x + kotlin.math.cos(this.angle)*(this.length/2)
-        this.endy = this.y + kotlin.math.sin(this.angle)*(this.length/2)
+        val prevs = arrayOf(startx, starty, endx, endy)
+        this.startx = this.x - kotlin.math.cos(this.angle) * (this.length / 2)
+        this.starty = this.y - kotlin.math.sin(this.angle) * (this.length / 2)
+        this.endx = this.x + kotlin.math.cos(this.angle) * (this.length / 2)
+        this.endy = this.y + kotlin.math.sin(this.angle) * (this.length / 2)
+        val afters = arrayOf(startx, starty, endx, endy)
+        checkStuck(startx)
     }
 
-    fun rotate(){
+    private fun checkStuck(value: Double) {
+
+    }
+
+    fun rotate() {
         this.angle += rotationSpeed
     }
 
-    fun translate(){
+    fun translate() {
         this.x += this.vx
         this.y += this.vy
         updateExtremities()
     }
 
     fun collision(width: Int, height: Int) {
-        if (this.x >= width || this.x <= 0 || this.y >= height || this.y <= 0) {
+        var collided = false
+        if (arrayOf(startx, endx).any { d -> d >= width }) {
+            this.vx = -abs(vx)
+            collided = true
+        }
+        if (arrayOf(startx, endx).any { d -> d <= 0 }) {
+            this.vx = abs(vx)
+            collided = true
+        }
+        if (arrayOf(starty, endy).any { d -> d >= height }) {
+            this.vy = -abs(vy)
+            collided = true
+        }
+        if (arrayOf(starty, endy).any { d -> d <= 0 }) {
+            this.vy = abs(vy)
+            collided = true
+        }
+        if (collided) {
+            this.rotationSpeed = -0.5 * rotationSpeed - 3 * (vy * kotlin.math.cos(angle) - vx * kotlin.math.sin(angle)) / (2 * length)
+        }
+    }
+
+    fun elasticCollision(width: Int, height: Int) {
+        val cond = arrayOf(startx, endx).any { d -> d <= 0 || d >= width } || arrayOf(starty, endy).any { d -> d <= 0 || d >= height }
+        if (cond) {
+            console.log("COLLISION")
+            console.log(startx, endx, starty, endy)
+            console.log(vx, vy)
             var oldRotationSpeed = rotationSpeed
-            this.rotationSpeed = -0.5 * oldRotationSpeed - 3 * (vy * kotlin.math.cos(angle) - vx * kotlin.math.sin(angle)) / (2*length)
+            this.rotationSpeed = -0.5 * oldRotationSpeed - 3 * (vy * kotlin.math.cos(angle) - vx * kotlin.math.sin(angle)) / (2 * length)
             this.vx = -vx + (length / 2) * kotlin.math.sin(angle) * (oldRotationSpeed + rotationSpeed)
             this.vy = -vy - (length / 2) * kotlin.math.cos(angle) * (oldRotationSpeed + rotationSpeed)
+            (0 until 2).forEach {
+                rotate()
+                translate()
+            }
         }
     }
 }
