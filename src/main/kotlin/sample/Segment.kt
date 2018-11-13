@@ -17,27 +17,20 @@ class Segment {
     var rotationSpeed = kotlin.math.PI / 2
     var length = 80
 
-    constructor(vx: Double, vy: Double, maxX : Double, maxY : Double) {
+    constructor(vx: Double, vy: Double, maxX: Double, maxY: Double) {
         this.x = (0 until maxX.toInt()).shuffled()[0].toDouble()
         this.y = (0 until maxY.toInt()).shuffled()[0].toDouble()
         updateExtremities()
-        this.vx = vx/SPEED_DIVIDER
-        this.vy = vy/SPEED_DIVIDER
+        this.vx = vx / SPEED_DIVIDER
+        this.vy = vy / SPEED_DIVIDER
         this.rotationSpeed /= ROTATION_DIVIDER
     }
 
     fun updateExtremities() {
-        val prevs = arrayOf(startx, starty, endx, endy)
         this.startx = this.x - kotlin.math.cos(this.angle) * (this.length / 2)
         this.starty = this.y - kotlin.math.sin(this.angle) * (this.length / 2)
         this.endx = this.x + kotlin.math.cos(this.angle) * (this.length / 2)
         this.endy = this.y + kotlin.math.sin(this.angle) * (this.length / 2)
-        val afters = arrayOf(startx, starty, endx, endy)
-        checkStuck(startx)
-    }
-
-    private fun checkStuck(value: Double) {
-
     }
 
     fun rotate() {
@@ -83,10 +76,8 @@ class Segment {
             this.rotationSpeed = -0.5 * oldRotationSpeed - 3 * (vy * kotlin.math.cos(angle) - vx * kotlin.math.sin(angle)) / (2 * length)
             this.vx = -vx + (length / 2) * kotlin.math.sin(angle) * (oldRotationSpeed + rotationSpeed)
             this.vy = -vy - (length / 2) * kotlin.math.cos(angle) * (oldRotationSpeed + rotationSpeed)
-            (0 until 2).forEach {
-                rotate()
-                translate()
-            }
+            rotate()
+            translate()
         }
     }
 }

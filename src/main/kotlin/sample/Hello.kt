@@ -8,7 +8,7 @@ import kotlin.browser.window
 import kotlin.js.Date
 
 fun myApp() {
-    SegmentCollisions().run()
+    SegmentCollisions().run(3000, true, false)
 }
 
 val canvas = initalizeCanvas()
@@ -36,40 +36,46 @@ class SegmentCollisions {
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
-    val segmentAmount = 3000
 
     var quadtree: QuadTree = QuadTree(256, 256, 256)
 
 
-    fun run() {
+    fun run(segmentAmount: Int, quad: Boolean, bench: Boolean) {
         var segments: MutableList<Segment> = mutableListOf<Segment>()
         (1..segmentAmount).forEach {
             val segment = Segment(100.0, 100.0, width, height)
             segments.add(segment)
         }
-        updateDisplay(segments, Date.now(), 0)
+        updateDisplay(segments, Date.now(), 0, quad, bench)
     }
 
-    fun updateDisplay(segments: List<Segment>, time : Double, frames : Int) {
+    fun updateDisplay(segments: List<Segment>, time: Double, frames: Int, quad: Boolean, bench: Boolean) {
         context.clearRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
-        quadtree = QuadTree(256, 256, 256)
+        if (quad) {
+            quadtree = QuadTree(256, 256, 256)
+        }
         segments.forEach { segment ->
             run {
                 segment.collision(canvas.width, canvas.height)
                 segment.rotate()
                 segment.translate()
-                quadtree.insert(segment)
+                if (quad) quadtree.insert(segment)
             }
         }
         draw(segments)
-//        detectCollisions(segments)
-        quadtree.queryRange(Box(256, 256, 512), context)
+        var t = Date.now()
+        if (quad) quadtree.queryRange(Box(256, 256, 512), context)
+        else detectCollisions(segments)
+        var t2 = Date.now() - t
+        if (bench) {
+
+        }
         val now = Date.now()
         if (now > time + 1000) {
-            window.requestAnimationFrame { updateDisplay(segments, now, 0) }
+            window.requestAnimationFrame { updateDisplay(segments, now, 0, quad, bench) }
             fps.textContent = "FPS : $frames"
         } else {
-            window.requestAnimationFrame { updateDisplay(segments, time, frames+1) }
+            window.requestAnimationFrame { updateDisplay(segments, time, frames + 1, quad, bench) }
         }
     }
 
