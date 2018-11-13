@@ -1,16 +1,14 @@
 package sample
 
-import org.w3c.dom.CanvasRenderingContext2D
-import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.*
 import sample.quadtree.Box
 import sample.quadtree.QuadTree
 import kotlin.browser.document
 import kotlin.browser.window
-import kotlin.dom.clear
-import kotlin.math.pow
+import kotlin.js.Date
 
 fun myApp() {
-    FancyLines().run()
+    SegmentCollisions().run()
 }
 
 val canvas = initalizeCanvas()
@@ -25,48 +23,55 @@ fun initalizeCanvas(): HTMLCanvasElement {
     return canvas
 }
 
-class FancyLines {
+class SegmentCollisions {
     val context = canvas.getContext("2d") as CanvasRenderingContext2D
     val height = canvas.height.toDouble()
     val width = canvas.width.toDouble()
-    val FPS = 60
     val segmentAmount = 200
 
-    val quadtree : QuadTree = QuadTree(256, 256, 256)
+    val quadtree: QuadTree = QuadTree(256, 256, 256)
 
 
     fun run() {
-        var segments : MutableList<Segment> = mutableListOf<Segment>()
+        var segments: MutableList<Segment> = mutableListOf<Segment>()
         (1..segmentAmount).forEach {
-            val segment = Segment(100.0, 100.0, width, height, FPS)
+            val segment = Segment(100.0, 100.0, width, height)
             segments.add(segment)
         }
-
-        window.setInterval({
-            context.clearRect(0.0,0.0, canvas.width.toDouble(), canvas.height.toDouble())
-            quadtree.deleteAll()
-            segments.forEach { segment ->
-                run {
-                    segment.collision(canvas.width, canvas.height)
-                    segment.rotate()
-                    segment.translate()
-                    quadtree.insert(segment)
-                }
-            }
-            detectCollisions(segments)
-            quadtree.queryRange(Box(256, 256, 512), context)
-            draw(segments)
-        }, 1000/FPS)
+        updateDisplay(segments, Date.now(), 0)
     }
 
-    private fun draw(segments : List<Segment>) {
+    fun updateDisplay(segments: List<Segment>, time : Double, frames : Int) {
+        context.clearRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
+        quadtree.deleteAll()
+        segments.forEach { segment ->
+            run {
+                segment.collision(canvas.width, canvas.height)
+                segment.rotate()
+                segment.translate()
+                quadtree.insert(segment)
+            }
+        }
+        detectCollisions(segments)
+        quadtree.queryRange(Box(256, 256, 512), context)
+        draw(segments)
+        val now = Date.now()
+        if (now > time + 1000) {
+            window.requestAnimationFrame { updateDisplay(segments, now, 0) }
+            //UPDATE DISPLAY
+        } else {
+            window.requestAnimationFrame { updateDisplay(segments, time, frames+1) }
+        }
+    }
+
+    private fun draw(segments: List<Segment>) {
         context.beginPath()
         segments.forEach { segment ->
             run {
-                var x = segment.x - kotlin.math.cos(segment.angle)*(segment.length/2)
-                var y = segment.y - kotlin.math.sin(segment.angle)*(segment.length/2)
-                var x2 = segment.x + kotlin.math.cos(segment.angle)*(segment.length/2)
-                var y2 = segment.y + kotlin.math.sin(segment.angle)*(segment.length/2)
+                var x = segment.x - kotlin.math.cos(segment.angle) * (segment.length / 2)
+                var y = segment.y - kotlin.math.sin(segment.angle) * (segment.length / 2)
+                var x2 = segment.x + kotlin.math.cos(segment.angle) * (segment.length / 2)
+                var y2 = segment.y + kotlin.math.sin(segment.angle) * (segment.length / 2)
                 context.moveTo(x, y)
                 context.lineTo(x2, y2)
             }
@@ -74,12 +79,12 @@ class FancyLines {
         context.stroke()
     }
 
-    private fun detectCollisions(segments : List<Segment>){
-        context.fillStyle = "rgba("+255+","+0+","+0+")"
+    private fun detectCollisions(segments: List<Segment>) {
+        context.fillStyle = "rgba(" + 255 + "," + 0 + "," + 0 + ")"
         for (i in 0 until segments.size) {
             var abx = segments[i].endx - segments[i].startx
             var aby = segments[i].endy - segments[i].starty
-            for (j in i+1 until segments.size) {
+            for (j in i + 1 until segments.size) {
                 var alpha = abx * (segments[j].starty - segments[i].starty) - aby * (segments[j].startx - segments[i].startx)
                 var beta = abx * (segments[j].endy - segments[i].starty) - aby * (segments[j].endx - segments[i].startx)
                 if (alpha < 0 != beta < 0) {
@@ -95,7 +100,7 @@ class FancyLines {
                 }
             }
         }
-        context.fillStyle = "rgba("+0+","+0+","+0+")"
+        context.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + ")"
     }
 
 }

@@ -1,6 +1,8 @@
 package sample
 
 class Segment {
+    var SPEED_DIVIDER = 60
+    var ROTATION_DIVIDER = 60
     var x = 0.0
     var y = 0.0
     var startx = 0.0
@@ -13,13 +15,13 @@ class Segment {
     var rotationSpeed = kotlin.math.PI / 2
     var length = 80
 
-    constructor(vx: Double, vy: Double, maxX : Double, maxY : Double, fps : Int) {
+    constructor(vx: Double, vy: Double, maxX : Double, maxY : Double) {
         this.x = (0 until maxX.toInt()).shuffled()[0].toDouble()
         this.y = (0 until maxY.toInt()).shuffled()[0].toDouble()
         updateExtremities()
-        this.vx = vx/fps
-        this.vy = vy/fps
-        this.rotationSpeed /= fps
+        this.vx = vx/SPEED_DIVIDER
+        this.vy /= vy/SPEED_DIVIDER
+        this.rotationSpeed /= ROTATION_DIVIDER
     }
 
     fun updateExtremities() {
