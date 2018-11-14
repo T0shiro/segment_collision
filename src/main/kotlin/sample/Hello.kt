@@ -13,8 +13,7 @@ import kotlin.math.pow
 var results = mutableMapOf<Int, Double>()
 
 fun myApp() {
-    SegmentCollisions().run(2.0.pow(9).toInt(), true, false)
-//    console.log(results.entries)
+    SegmentCollisions().run(2.0.pow(8).toInt(), true, false)
 }
 
 val canvas = initalizeCanvas()

@@ -4,7 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import sample.Segment
 
 class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
-    var MAX_NODE_CAPACITY = 10
+    var MIN_SIZE = 64
 
     var boundary: Box? = null
 
@@ -26,7 +26,7 @@ class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
             return false
         }
 
-        if (segments.size < MAX_NODE_CAPACITY) {
+        if (halfDimension*2 > MIN_SIZE) {
             segments.add(segment)
             return true
         }

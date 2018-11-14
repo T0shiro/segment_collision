@@ -13,7 +13,7 @@ class Segment {
     var translationY = 1.0
     var angle = (0 until 2 * kotlin.math.PI.toInt()).shuffled()[0].toDouble()
     var rotationSpeed = kotlin.math.PI / 120
-    var length = 80
+    var length = 40
 
     constructor(maxX : Double, maxY : Double) {
         this.x = (0 until maxX.toInt()).shuffled()[0].toDouble()
@@ -66,6 +66,7 @@ class Segment {
         }
     }
 
+    // NOT USED BECAUSE OF BLOCK ON WALL HIT
     fun elasticCollision(width: Int, height: Int) {
         val cond = arrayOf(startx, endx).any { d -> d <= 0 || d >= width } || arrayOf(starty, endy).any { d -> d <= 0 || d >= height }
         if (cond) {
