@@ -1,18 +1,25 @@
 package sample
 
-import org.w3c.dom.*
+import org.w3c.dom.CanvasRenderingContext2D
+import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.Text
 import sample.quadtree.Box
 import sample.quadtree.QuadTree
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.js.Date
+import kotlin.math.pow
+
+var results = mutableMapOf<Int, Double>()
 
 fun myApp() {
-    SegmentCollisions().run(3000, true, false)
+    (1..10).onEach { i -> SegmentCollisions().run(2.0.pow(i).toInt(), true, true) }
+    console.log(results.entries)
 }
 
 val canvas = initalizeCanvas()
 val fps = initializeText()
+var nbBenchExecs = 0
 
 fun initializeText(): Text {
     val fps = document.createTextNode("FPS :")
@@ -41,6 +48,7 @@ class SegmentCollisions {
 
 
     fun run(segmentAmount: Int, quad: Boolean, bench: Boolean) {
+        nbBenchExecs = 0
         var segments: MutableList<Segment> = mutableListOf<Segment>()
         (1..segmentAmount).forEach {
             val segment = Segment(width, height)
@@ -50,6 +58,7 @@ class SegmentCollisions {
     }
 
     fun updateDisplay(segments: List<Segment>, time: Double, frames: Int, quad: Boolean, bench: Boolean) {
+        val times = mutableListOf<Double>()
         context.clearRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
         if (quad) {
             quadtree = QuadTree(256, 256, 256)
@@ -63,12 +72,18 @@ class SegmentCollisions {
             }
         }
         draw(segments)
-        var t = Date.now()
+        val t = Date.now()
         if (quad) quadtree.queryRange(Box(256, 256, 512), context)
         else detectCollisions(segments)
         var t2 = Date.now() - t
+        times.add(t2)
         if (bench) {
-
+            nbBenchExecs++
+            if (nbBenchExecs == 100) {
+                results[segments.size] = times.sum() / times.size
+                console.log(segments.size, times.sum() / times.size)
+                return
+            }
         }
         val now = Date.now()
         if (now > time + 1000) {
