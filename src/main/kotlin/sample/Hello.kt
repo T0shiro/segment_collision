@@ -13,8 +13,8 @@ import kotlin.math.pow
 var results = mutableMapOf<Int, Double>()
 
 fun myApp() {
-    (1..10).onEach { i -> SegmentCollisions().run(2.0.pow(i).toInt(), true, true) }
-    console.log(results.entries)
+    SegmentCollisions().run(2.0.pow(9).toInt(), true, false)
+//    console.log(results.entries)
 }
 
 val canvas = initalizeCanvas()
@@ -73,7 +73,7 @@ class SegmentCollisions {
         }
         draw(segments)
         val t = Date.now()
-        if (quad) quadtree.queryRange(Box(256, 256, 512), context)
+        if (quad) console.log(quadtree.queryRange(Box(256, 256, 512), context))
         else detectCollisions(segments)
         var t2 = Date.now() - t
         times.add(t2)

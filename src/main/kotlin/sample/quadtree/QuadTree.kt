@@ -4,7 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import sample.Segment
 
 class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
-    var MAX_NODE_CAPACITY = 5
+    var MAX_NODE_CAPACITY = 10
 
     var boundary: Box? = null
 
@@ -64,10 +64,11 @@ class QuadTree(var xCenter: Int, var yCenter: Int, halfDimmension: Int) {
             detectCollisions(segmentsInRange, context)
         } else {
             // Sinon, relancer la recherche sur les 4 enfants
-            northWest!!.queryRange(range, context)
-            northEast!!.queryRange(range, context)
-            southWest!!.queryRange(range, context)
-            southEast!!.queryRange(range, context)
+            val half = halfDimension / 2
+            northWest!!.queryRange(Box(xCenter - half, yCenter + half, half), context)
+            northEast!!.queryRange(Box(xCenter + half, yCenter + half, half), context)
+            southWest!!.queryRange(Box(xCenter - half, yCenter - half, half), context)
+            southEast!!.queryRange(Box(xCenter + half, yCenter - half, half), context)
         }
         return true
     }
